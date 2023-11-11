@@ -11,6 +11,8 @@ async function fetchQuestion() {
     console.log(completion.choices[0].message.content);
 }
 
+export { fetchQuestion };
+
 //   returns 
 //       'Title: Two Sum\n' +
 //       '\n' +

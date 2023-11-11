@@ -1,15 +1,17 @@
 // import mongodb module
-const { MongoClient, ServerApiVersion } = require('mongodb');
+import { MongoClient, ServerApiVersion } from 'mongodb';
+
 const uri = "mongodb+srv://RishikJanaswamy:Hackumass2023@hackumass2023.flynsqu.mongodb.net/?retryWrites=true&w=majority";
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
-const client = new MongoClient(uri, {
-  serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true,
-  }
+const client = new MongoClient("mongodb+srv://RishikJanaswamy:Hackumass2023@hackumass2023.flynsqu.mongodb.net/?retryWrites=true&w=majority", {
+    serverApi: {
+        version: ServerApiVersion.v1,
+        strict: true,
+        deprecationErrors: true,
+    }
 });
+
 
 async function run() {
   try {
@@ -168,6 +170,37 @@ async function createQuestion() {
   }
 }
 
+// create a table for Users which has a username, password, and a list of questions that the user has completed 
+// along with the user's score for each question and the total score for all the questions
+async function createUsersCollection() {
+  try {
+    // Connect the client to the server
+    await client.connect();
+
+    // Specify the database
+    const db = client.db("HackUmass2023");
+
+    // Specify the collection
+    const collection = db.collection("users");
+
+    // Create an array of user documents
+    const users = [
+      { username: "user1", password: "password1", questions: {question1: {score: 0}, question2: {score: 0}, question3: {score: 0}}, totalScore: 0 },
+      { username: "user2", password: "password2", questions: {question1: {score: 0}, question2: {score: 0}, question3: {score: 0}}, totalScore: 0 },
+      // Add more users as needed
+    ];
+
+    // Insert the array of users into the collection
+    await collection.insertMany(users);
+
+    console.log("Users inserted successfully");
+  } catch (e) {
+    console.error(e);
+  } finally {
+    // Ensures that the client will close when you finish/error
+    await client.close();
+  }
+}
 
 async function removeQuestion(questionToRemove) {
   try {
@@ -192,8 +225,42 @@ async function removeQuestion(questionToRemove) {
   }
 }
 
+// User Authentication with mongoDB alredy set up
+async function authenticateUser(username, password) {
+    try {
+        // Connect the client to the server
+        await client.connect();
 
-createQuestion().catch(console.dir);
+        // Specify the database
+        const db = client.db("HackUmass2023");
+
+        // Specify the collection
+        const collection = db.collection("Users");
+
+        // Find the user that matches the username
+        const user = await collection.findOne({ username: username });
+
+        // Check if a user was found and if the password matches
+        if (user && user.password === password) {
+            // Return the user object
+            return user;
+        } else {
+            // Return an error message
+            return { error: "Invalid username or password" };
+        }
+    } catch (e) {
+        console.error(e);
+    } finally {
+        // Ensures that the client will close when you finish/error
+        await client.close();
+    }
+}
+
+
+// createUsersCollection().catch(console.dir);
+// run().catch(console.dir);
+
+export { client, createQuestion, removeQuestion };
 
 // createQuestionsCollection().catch(console.dir);
 // run().catch(console.dir);

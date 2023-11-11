@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "backend for hackUmass2023",
   "main": "db.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -18,6 +19,7 @@
   "homepage": "https://github.com/aryan0821/grabngo#readme",
   "dependencies": {
     "mongodb": "^6.2.0",
+    "openai": "^4.17.4",
     "sequelize": "^6.34.0"
   }
 }
