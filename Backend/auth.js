@@ -47,4 +47,4 @@ async function authenticateUser(username, password) {
 }
 
 
-authenticateUser("user1", "password1").catch(console.dir);
+export { authenticateUser };

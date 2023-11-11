@@ -1,15 +1,24 @@
-const { OpenAI } = require("openai");
+// const { OpenAI } = require("openai");
 
-const openai = new OpenAI({ apiKey: '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' });
+// import OpenAI from 'openai-api';
+import OpenAI from 'openai';
 
-async function fetchQuestion() {
+// const { OpenAI } = require("openai");
+
+const openai = new OpenAI({ apiKey: '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' });
+
+async function fetchQuestion(topic) {
     const completion = await openai.chat.completions.create({
-        messages: [{ role: "system", content: "give me a leetcode coding problem. Create 4 multiple choice questions about the leetcode question. Each multiple choice question must have 4 options (correct, B, C, D). Next line after each title, after explanation, multiple choice questions and each option." }],
+        messages: [{ role: "system", content: `give me a ${topic} problem. Create 4 multiple choice questions about the leetcode question. Each multiple choice question must have 4 options (correct, B, C, D). Next line after each title, after explanation, multiple choice questions and each option.` }],
         model: "gpt-3.5-turbo",
     });
 
     console.log(completion.choices[0].message.content);
 }
+
+fetchQuestion("react");
+
+// fetchQuestion();
 
 export { fetchQuestion };
 
