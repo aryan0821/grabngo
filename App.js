@@ -16,10 +16,8 @@ function App() {
       <Stack.Navigator initialRouteName="Login">
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="OrderOptions" component={OrderOptionsScreen} />
         <Stack.Screen name="MenuScreen" component={MenuScreen} />
         <Stack.Screen name="ConfirmOrderScreen" component={ConfirmOrderScreen} />
-        
       </Stack.Navigator>
     </NavigationContainer>
   );

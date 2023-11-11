@@ -1,7 +1,7 @@
 [
     {
         "id": 1,
-        "name": "Berkshire",
+        "name": "React.js",
         "image": "../assets/dining-hall-1.jpg",
         "menuList": [
             "Pizza",
@@ -19,7 +19,7 @@
     },
     {
         "id": 2,
-        "name": "Worcester",
+        "name": "Node.js",
         "image": "../assets/dining-hall-2.jpg",
         "menuList": [
             "Pasta",
@@ -34,7 +34,7 @@
     },
     {
         "id": 3,
-        "name": "Franklin",
+        "name": "MySQL",
         "image": "../assets/dining-hall-3.jpg",
         "menuList": [
             "Tacos",

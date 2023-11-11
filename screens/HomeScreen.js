@@ -16,7 +16,7 @@ const getImage = (imageName) => {
 const HomeScreen = ({ navigation }) => {
     return (
         <ScrollView style={styles.container}>
-            <Text style={styles.title}>Dining Halls</Text>
+            <Text style={styles.title}>Pick Your Tech</Text>
             {diningHalls.map((hall) => (
                 <TouchableOpacity
                     key={hall.id}
