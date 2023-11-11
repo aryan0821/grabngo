@@ -5,7 +5,7 @@ const LoginScreen = ({ navigation }) => {
     // Replace with your login handling logic
     const handleLogin = () => {
         // Navigate to the 'Home' screen
-        navigation.navigate('OrderOptions');
+        navigation.navigate('Home');
     };
 
     return (
