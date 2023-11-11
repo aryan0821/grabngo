@@ -1,0 +1,50 @@
+[
+    {
+        "id": 1,
+        "name": "Berkshire",
+        "image": "../assets/dining-hall-1.jpg",
+        "menuList": [
+            "Pizza",
+            "Burgers",
+            "Sushi",
+            "Grilled Cheese",
+            "Caesar Salad",
+            "Veggie Wrap",
+            "Fruit Salad",
+            "Spaghetti",
+            "Chicken Tenders",
+            "Mac and Cheese",
+            "Chicken Wings"
+        ]
+    },
+    {
+        "id": 2,
+        "name": "Worcester",
+        "image": "../assets/dining-hall-2.jpg",
+        "menuList": [
+            "Pasta",
+            "Salad",
+            "Wraps",
+            "Chicken Curry",
+            "Beef Stew",
+            "Vegan Burger",
+            "Spring Rolls",
+            "Fish and Chips"
+        ]
+    },
+    {
+        "id": 3,
+        "name": "Franklin",
+        "image": "../assets/dining-hall-3.jpg",
+        "menuList": [
+            "Tacos",
+            "Burritos",
+            "Nachos",
+            "BBQ Ribs",
+            "Lobster Roll",
+            "Quinoa Salad",
+            "Falafel",
+            "Lamb Gyro"
+        ]
+    }
+]
