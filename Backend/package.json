@@ -1,0 +1,23 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "backend for hackUmass2023",
+  "main": "db.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aryan0821/grabngo.git"
+  },
+  "author": "Rishik Janaswamy",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/aryan0821/grabngo/issues"
+  },
+  "homepage": "https://github.com/aryan0821/grabngo#readme",
+  "dependencies": {
+    "mongodb": "^6.2.0",
+    "sequelize": "^6.34.0"
+  }
+}
