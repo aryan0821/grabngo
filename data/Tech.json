@@ -1,0 +1,38 @@
+[
+    {
+        "id": 1,
+        "name": "React.js",
+        "image": "../assets/tech-1.png",
+        "description": "React.js is a JavaScript library for building user interfaces, focusing on a component-driven development approach and efficient rendering."
+    },
+    {
+        "id": 2,
+        "name": "Node.js",
+        "image": "../assets/tech-2.png",
+        "description": "Node.js is a runtime environment for executing JavaScript on the server side, known for its event-driven, non-blocking I/O model."
+    },
+    {
+        "id": 3,
+        "name": "MySQL",
+        "image": "../assets/tech-3.png",
+        "description": "MySQL is a popular open-source relational database management system, widely used for web applications and data storage solutions."
+    },
+    {
+        "id": 4,
+        "name": "Python",
+        "image": "../assets/tech-4.png",
+        "description": "Python is a versatile programming language known for its readability, wide range of applications, and strong community support."
+    },
+    {
+        "id": 5,
+        "name": "OOP (Object-Oriented Programming)",
+        "image": "../assets/tech-5.png",
+        "description": "Object-Oriented Programming (OOP) is a programming paradigm based on the concept of objects containing data and methods."
+    },
+    {
+        "id": 6,
+        "name": "Cloud Computing",
+        "image": "../assets/tech-6.png",
+        "description": "Cloud Computing refers to the delivery of computing services over the internet, offering scalability, flexibility, and cost efficiency."
+    }
+]
