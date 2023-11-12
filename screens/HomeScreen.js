@@ -2,7 +2,6 @@
 import React from 'react';
 import { SafeAreaView, View, ScrollView, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import techs from '../data/Tech.json';
-import { useNavigation } from '@react-navigation/native';
 
 
 const imageMap = {
@@ -18,7 +17,7 @@ const getImage = (imageName) => {
     return imageMap[imageName]; // default image if not found
 };
 
-const createQuestion = async ({ topic }) => {
+const createQuestion = async ({ navigation, topic }) => {
     try {
         // Construct the URL with the topic query parameter
         const url = `http://localhost:3000/questions?topic=${encodeURIComponent(topic)}`;
@@ -35,7 +34,7 @@ const createQuestion = async ({ topic }) => {
         const question = await response.json();
 
         // Navigate with the fetched question
-        useNavigation.navigate('Question', { question, user });
+        navigation.navigate('Question', { question, user, count });
     } catch (error) {
         console.error('Error fetching question:', error);
     }
@@ -49,7 +48,7 @@ const HomeScreen = ({ route }) => {
         <ScrollView style={styles.container}>
             <Text style={styles.title}>Pick Your Tech</Text>
             {techs.map((tech) => (
-                <TouchableOpacity key={tech.id} style={styles.diningHallContainer} onPress={() => createQuestion(tech.topic)}>
+                <TouchableOpacity key={tech.id} style={styles.diningHallContainer} onPress={() => createQuestion({ navigation, topic: tech.name })}>
                     <Image source={getImage(tech.image)} style={styles.diningHallImage} />
                     <View style={styles.textContainer}>
                         <Text style={styles.diningHallName}>{tech.name}</Text>

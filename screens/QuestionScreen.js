@@ -3,23 +3,34 @@ import { View, Text, TouchableOpacity, StyleSheet, Animated } from 'react-native
 
 const QuestionScreen = ({ navigation, route }) => {
     // Example question and answers
-    const { question, user } = route.params; // Destructuring to get the topic passed from HomeScreen
+    const { question, user, count } = route.params; // Destructuring to get the topic passed from HomeScreen
 
-    let userPoints = user.totalScore;
+    // let userPoints = user.totalScore;
 
     // Example question and answers (modify these based on the passed topic)
+    // Extracting the question object
+    const [currentQuestion, setCurrentQuestion] = useState({});
     const [options, setOptions] = useState([]);
     const [correctAnswer, setCorrectAnswer] = useState("");
     const [selectedAnswer, setSelectedAnswer] = useState("");
+    const [score, setScore] = useState(user.totalScore);
     const backgroundColorAnim = useRef(new Animated.Value(0)).current;
 
     useEffect(() => {
-        // Here you can set questions and answers based on the passed 'topic'
-        // For demonstration, I'll just set a generic question
-        setQuestion(`Questions related to ${topic}`);
-        setOptions(["Option 1", "Option 2", "Option 3", "Option 4"]);
-        setCorrectAnswer("Option 1"); // Set the correct answer appropriately
-    }, [topic]);
+        // Assuming the question object has a 'questions' property with multiple questions
+        // Here you pick the first question to start with. You can later iterate through them.
+        const QuestionKey = Object.keys(question.questions)[count];
+        const Question = question.questions[QuestionKey];
+
+        setCurrentQuestion(Question);
+        setOptions([
+            Question.CorrectAnswer,
+            Question.answer2,
+            Question.Answer3,
+            Question.answer4
+        ]);
+        setCorrectAnswer(Question.CorrectAnswer);
+    }, [question]);
 
     const animateBackgroundColor = (toValue, finalColor) => {
         // Reset to initial value
@@ -51,7 +62,8 @@ const QuestionScreen = ({ navigation, route }) => {
     const onAnswerSelect = (answer) => {
         setSelectedAnswer(answer);
         if (answer === correctAnswer) {
-            userPoints += 1;
+            // userPoints += 1;
+            setScore(score + 1)
             console.log("Correct Answer");
             animateBackgroundColor(1, 'green');
         } else {
@@ -85,6 +97,26 @@ const QuestionScreen = ({ navigation, route }) => {
                     </TouchableOpacity>
                 ))}
             </View>
+            <TouchableOpacity
+                style={styles.nextButton}
+                onPress={async () => {
+                    if (questionIndex < Object.keys(question.questions).length - 1) {
+                        // Navigate to the same screen with updated questionIndex
+                        navigation.push('Question', { question: question, user: user, count: questionIndex + 1 });
+                        let add_score = await fetch(`http://localhost:3000/updatescore?username=${user.username}&newTotalScore=${score}`)
+                        if (add_score.ok) {
+                            console.log("Score Updated");
+                        } else {   
+                            console.log("Score not updated");
+                        }
+                    } else {
+                        // Handle the scenario when all questions are answered
+                        // For example, navigate to a result screen or reset the quiz
+                    }
+                }}
+            >
+                <Text style={styles.nextButtonText}>Next</Text>
+            </TouchableOpacity>
         </Animated.View>
     );
 };
@@ -100,7 +132,6 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         marginBottom: 20,
         color: 'black',
-        fontFamily: '', // Set your custom font here
     },
     optionsContainer: {
         marginTop: 10,
@@ -116,6 +147,17 @@ const styles = StyleSheet.create({
     optionText: {
         fontSize: 18,
         textAlign: 'center',
+    },
+    nextButton: {
+        padding: 10,
+        backgroundColor: '#007bff',
+        alignSelf: 'flex-start',
+        margin: 10,
+        borderRadius: 5,
+    },
+    nextButtonText: {
+        color: 'white',
+        fontSize: 16,
     },
 });
 
