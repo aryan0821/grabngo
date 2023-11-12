@@ -3,7 +3,7 @@
 import express from "express";
 import cors from "cors";
 import { authenticateUser } from "./auth.js";
-import { client } from "./db.js";
+import { client, insertQuestion } from "./db.js";
 import { fetchQuestion } from "./openapi.js";
 
 const app = express();
@@ -37,12 +37,14 @@ app.get("/questions", (req, res) => {
         const question = fetchQuestion(topic);
         question.then((question) => {
             res.status(200).json(question);
+            insertQuestion(question)
         });
     }
     catch (e) {
         console.error(e);
     }
 });
+
 
 // Define a port
 const port = process.env.PORT || 3000;
