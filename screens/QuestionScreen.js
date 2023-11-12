@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Animated } from 'react-native';
 
+
 const QuestionScreen = ({ navigation, route }) => {
     // Example question and answers
     const { question, user, count } = route.params; // Destructuring to get the topic passed from HomeScreen
@@ -9,55 +10,29 @@ const QuestionScreen = ({ navigation, route }) => {
 
     // Example question and answers (modify these based on the passed topic)
     // Extracting the question object
+    const [backgroundColor, setBackgroundColor] = useState('white');
     const [currentQuestion, setCurrentQuestion] = useState({});
     const [options, setOptions] = useState([]);
     const [correctAnswer, setCorrectAnswer] = useState("");
     const [selectedAnswer, setSelectedAnswer] = useState("");
     const [score, setScore] = useState(user.totalScore);
-    const backgroundColorAnim = useRef(new Animated.Value(0)).current;
+    const [currCount, setCount] = useState(1);
 
     useEffect(() => {
         // Assuming the question object has a 'questions' property with multiple questions
         // Here you pick the first question to start with. You can later iterate through them.
-        const Question = question[0].questions[`Question${count}`];
+        const Question = question[0].questions[`Question${currCount}`];
         // const Question = question[0].questions[QuestionKey];
 
         setCurrentQuestion(Question.question);
         setOptions([
             Question.CorrectAnswer,
             Question.answer2,
-            Question.Answer3,
+            Question.answer3,
             Question.answer4
         ]);
         setCorrectAnswer(Question.CorrectAnswer);
-    }, [question[0].questions[`Question${count}`]]);
-
-    const animateBackgroundColor = (toValue, finalColor) => {
-        // Reset to initial value
-        backgroundColorAnim.setValue(0);
-
-        // Start the animation
-        Animated.sequence([
-            // First, slowly change to a mild tone
-            Animated.timing(backgroundColorAnim, {
-                toValue: 0.25,
-                duration: 1000,
-                useNativeDriver: false
-            }),
-            // Then, flash intensely
-            Animated.timing(backgroundColorAnim, {
-                toValue: 0.5,
-                duration: 500,
-                useNativeDriver: false
-            }),
-            // Reset to mild tone
-            Animated.timing(backgroundColorAnim, {
-                toValue: 0.25,
-                duration: 500,
-                useNativeDriver: false
-            })
-        ]).start();
-    };
+    }, [question[0].questions[`Question${currCount}`]]);
 
     const onAnswerSelect = (answer) => {
         setSelectedAnswer(answer);
@@ -65,24 +40,46 @@ const QuestionScreen = ({ navigation, route }) => {
             // userPoints += 1;
             setScore(score + 1)
             console.log("Correct Answer");
-            animateBackgroundColor(1, 'green');
+            setBackgroundColor('green');
         } else {
             console.log("Incorrect Answer");
-            animateBackgroundColor(1, 'red');
+            setBackgroundColor('red');
         }
     };
 
-    // Interpolating the animated value to colors
-    const backgroundColor = backgroundColorAnim.interpolate({
-        inputRange: [0, 0.5, 1],
-        outputRange: ['white', selectedAnswer === correctAnswer ? '#90ee90' : '#ffcccb', selectedAnswer === correctAnswer ? 'green' : 'red'] // Mild green and red
-    });
+    const createQuestion = async (user, topic) => {
+    try {
+        // Construct the URL with the topic query parameter
+        const url = `http://localhost:3000/questions?topic=${encodeURIComponent(topic)}`;
+
+        // Make a GET request to the server
+        const response = await fetch(url);
+
+        // Check if the response is ok (status in the range 200-299)
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        // Parse the JSON response
+        let question = []
+        question.push(await response.json());
+
+        let count = 1;
+        console.log(question, " from home page!"); 
+        console.log(typeof question, " from home page!");
+
+        // Navigate with the fetched question
+        navigation.navigate('Question', { question, user, count });
+    } catch (error) {
+        console.error('Error fetching question:', error);
+    }
+};
 
 
     // Rendering the question and options
     return (
         <Animated.View style={[styles.container, { backgroundColor }]}>
-            <Text style={styles.questionText}>{question[0].questions[`Question${count}`].question}</Text>
+            <Text style={styles.questionText}>{question[0].questions[`Question${currCount}`].question}</Text>
             <View style={styles.optionsContainer}>
                 {options.map((option, index) => (
                     <TouchableOpacity
@@ -93,7 +90,6 @@ const QuestionScreen = ({ navigation, route }) => {
                         ]}
                         onPress={() => {
                             onAnswerSelect(option);
-                            count += 1; 
                             }
                         }
                     >
@@ -104,10 +100,21 @@ const QuestionScreen = ({ navigation, route }) => {
             <TouchableOpacity
                 style={styles.nextButton}
                 onPress={async () => {
-                    if (count < 5) {
+                    if (currCount < 5) {
                         // Navigate to the same screen with updated questionIndex
-                        navigation.push('Question', { question: question, user: user, count: count + 1 });
-                        let add_score = await fetch(`http://localhost:3000/updatescore?username=${user.username}&newTotalScore=${score}`)
+                        setCount(currCount + 1);
+                        setBackgroundColor('white');
+                        // navigation.push('Question', { question: question, user: user, count: currCount });
+                        let add_score = await fetch('http://localhost:3000/updatescore', {
+                                        method: 'POST',
+                                        headers: {
+                                            'Content-Type': 'application/json',
+                                        },
+                                        body: JSON.stringify({
+                                            username: user.username,
+                                            newTotalScore: score,
+                                        }),
+                                        });
                         if (add_score.ok) {
                             console.log("Score Updated");
                         } else {   
@@ -115,6 +122,7 @@ const QuestionScreen = ({ navigation, route }) => {
                         }
                     } else {
                         // Handle the scenario when all questions are answered
+                        createQuestion(user, question[0].topic);
                         // For example, navigate to a result screen or reset the quiz
                     }
                 }}

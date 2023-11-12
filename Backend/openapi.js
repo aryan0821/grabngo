@@ -11,7 +11,7 @@ const openai = new OpenAI({ apiKey: process.env.API_KEY });
 async function fetchQuestion(topic) {
     const completion = await openai.chat.completions.create({
         messages: [{
-            role: "system", content: `give me a ${topic} problem. Create 4 multiple choice questions about the leetcode question. Each multiple choice question must have 4 options (correct, B, C, D). Next line after each title, after explanation, multiple choice questions and each option. format it as a JSON String for example
+            role: "system", content: `give me a ${topic} problem. Create 4 multiple choice questions about the leetcode question. Each multiple choice question must have 4 options (correct, B, C, D). Next line after each title, after explanation, multiple choice questions and each option. very strictly format as a JSON string as below with the exact keys each question must be labeled as "Questionx" with x as the question number. Each question must have the following attributes, "question", "CorrectAnswer", "answer2", "answer3", "answer4" like the example below:
         '{
         "topic": "topic1",
         "scenario": "scenario1",
@@ -20,21 +20,21 @@ async function fetchQuestion(topic) {
                 "question": "question1",
                 "CorrectAnswer": "CorrecrAnswer",
                 "answer2": "answer2",
-                "Answer3": "answer3",
+                "answer3": "answer3",
                 "answer4": "answer4",
             },
             "Question2": {
                 "question": "question2",
                 "CorrectAnswer": "CorrecrAnswer",
                 "answer2": "answer2",
-                "Answer3": "answer3",
+                "answer3": "answer3",
                 "answer4": "answer4",
             },
             "Question3": {
                 "question": "question3",
                 "CorrectAnswer": "CorrecrAnswer",
                 "answer2": "answer2",
-                "Answer3": "answer3",
+                "answer3": "answer3",
                 "answer4": "answer4",
             },
             }
