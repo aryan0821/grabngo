@@ -1,10 +1,10 @@
 // import mongodb module
 import { MongoClient, ServerApiVersion } from 'mongodb';
 
-const uri = "mongodb+srv://RishikJanaswamy:Hackumass2023@hackumass2023.flynsqu.mongodb.net/?retryWrites=true&w=majority";
+const uri = "mongodb+srv://Limbani:Hackumass2023@hackumass2023.flynsqu.mongodb.net/?retryWrites=true&w=majority";
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
-const client = new MongoClient("mongodb+srv://RishikJanaswamy:Hackumass2023@hackumass2023.flynsqu.mongodb.net/?retryWrites=true&w=majority", {
+const client = new MongoClient("mongodb+srv://Limbani:Hackumass2023@hackumass2023.flynsqu.mongodb.net/?retryWrites=true&w=majority", {
     serverApi: {
         version: ServerApiVersion.v1,
         strict: true,
@@ -271,15 +271,65 @@ async function removeUserByUsername(username) {
     console.log(`${result.deletedCount} document(s) were deleted.`);
 }
 
+async function getUserScore(username) {
+  await client.connect();
+
+  const db = client.db("HackUmass2023");
+  const collection = db.collection("users");
+
+  // Find the user document by username
+  const userDocument = await collection.findOne({ username: username });
+
+  // Check if the user document exists and has a totalScore field
+  if (userDocument && userDocument.hasOwnProperty('totalScore')) {
+    console.log(`Score for ${username}: ${userDocument.totalScore}`);
+  } else {
+    console.log(`User not found or score not available for ${username}`);
+  }
+}
+
+
+async function updateScore(username, newScore) {
+  try {
+    // Connect to the database (if not already connected)
+    await client.connect();
+
+    // Get the database and collection
+    const db = client.db("HackUmass2023");
+    const users = db.collection("users");
+
+    // Find the user by username and update their score
+    const updateResult = await users.updateOne(
+      { username: username },
+      { $set: { totalScore: newScore } }
+    );
+
+    // Check if the update was successful
+    if (updateResult.matchedCount === 0) {
+      console.log(`No user found with username ${username}`);
+    } else if (updateResult.modifiedCount === 0) {
+      console.log(`Score for ${username} was not updated (it might already be the same).`);
+    } else {
+      console.log(`Score updated for ${username}`);
+    }
+  } catch (e) {
+    console.error(`Error updating score for ${username}:`, e);
+  }
+}
+
+
 
 // createUsersCollection().catch(console.dir);
 // run().catch(console.dir);
 
 // removeUserByUsername("user2").catch(console.dir);
 
-createUsersCollection().catch(console.dir);
+// createUsersCollection().catch(console.dir);
+// getUserScore("user2").catch(console.dir); 
 
-export { client, createQuestion, removeQuestion };
+// updateUserScore("user2",1).catch(console.dir); 
+
+export { client, createQuestion, removeQuestion, getUserScore, updateScore };
 
 // createQuestionsCollection().catch(console.dir);
 // run().catch(console.dir);
