@@ -5,15 +5,47 @@ import OpenAI from 'openai';
 
 // const { OpenAI } = require("openai");
 
-const openai = new OpenAI({ apiKey: 'your-key-here' });
+const openai = new OpenAI({ apiKey: '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' });
 
 async function fetchQuestion(topic) {
     const completion = await openai.chat.completions.create({
-        messages: [{ role: "system", content: `give me a ${topic} problem. Create 4 multiple choice questions about the leetcode question. Each multiple choice question must have 4 options (correct, B, C, D). Next line after each title, after explanation, multiple choice questions and each option.` }],
+        messages: [{
+            role: "system", content: `give me a ${topic} problem. Create 4 multiple choice questions about the leetcode question. Each multiple choice question must have 4 options (correct, B, C, D). Next line after each title, after explanation, multiple choice questions and each option. format it as a JSON String for example
+        '{
+        "topic": "topic1",
+        "scenario": "scenario1",
+        "questions": {
+            "Question1": {
+                "question": "question1",
+                "CorrectAnswer": "CorrecrAnswer",
+                "answer2": "answer2",
+                "Answer3": "answer3",
+                "answer4": "answer4",
+            },
+            "Question2": {
+                "question": "question2",
+                "CorrectAnswer": "CorrecrAnswer",
+                "answer2": "answer2",
+                "Answer3": "answer3",
+                "answer4": "answer4",
+            },
+            "Question3": {
+                "question": "question3",
+                "CorrectAnswer": "CorrecrAnswer",
+                "answer2": "answer2",
+                "Answer3": "answer3",
+                "answer4": "answer4",
+            },
+            }
+    }'` }],
         model: "gpt-3.5-turbo",
     });
 
-    console.log(completion.choices[0].message.content);
+    let question = completion.choices[0].message.content;
+    question = JSON.parse(question);
+    console.log(question);
+    return question;
+
 }
 
 fetchQuestion("react");

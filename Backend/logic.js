@@ -55,3 +55,7 @@ app.listen(port, () => {
 
 
 /////////////////////////// Question ///////////////////////////
+
+// Takes in updated user profile from frontend and updates the user profile in the database
+
+
