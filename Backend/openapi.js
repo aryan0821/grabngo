@@ -2,10 +2,11 @@
 
 // import OpenAI from 'openai-api';
 import OpenAI from 'openai';
-import { endEvent } from 'react-native/Libraries/Performance/Systrace';
+
+import dotenv from 'dotenv';
+dotenv.config();
 
 // const { OpenAI } = require("openai");
-require('dotenv').config();
 
 const openai = new OpenAI({ apiKey: process.env.API_KEY });
 
