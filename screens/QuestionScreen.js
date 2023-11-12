@@ -19,10 +19,10 @@ const QuestionScreen = ({ navigation, route }) => {
     useEffect(() => {
         // Assuming the question object has a 'questions' property with multiple questions
         // Here you pick the first question to start with. You can later iterate through them.
-        const QuestionKey = Object.keys(question.questions)[count];
-        const Question = question.questions[QuestionKey];
+        const Question = question[0].questions[`Question${count}`];
+        // const Question = question[0].questions[QuestionKey];
 
-        setCurrentQuestion(Question);
+        setCurrentQuestion(Question.question);
         setOptions([
             Question.CorrectAnswer,
             Question.answer2,
@@ -30,7 +30,7 @@ const QuestionScreen = ({ navigation, route }) => {
             Question.answer4
         ]);
         setCorrectAnswer(Question.CorrectAnswer);
-    }, [question]);
+    }, [question[0].questions[`Question${count}`]]);
 
     const animateBackgroundColor = (toValue, finalColor) => {
         // Reset to initial value
@@ -82,7 +82,7 @@ const QuestionScreen = ({ navigation, route }) => {
     // Rendering the question and options
     return (
         <Animated.View style={[styles.container, { backgroundColor }]}>
-            <Text style={styles.questionText}>{question}</Text>
+            <Text style={styles.questionText}>{question[0].questions[`Question${count}`].question}</Text>
             <View style={styles.optionsContainer}>
                 {options.map((option, index) => (
                     <TouchableOpacity
@@ -91,7 +91,11 @@ const QuestionScreen = ({ navigation, route }) => {
                             styles.optionButton,
                             { backgroundColor: selectedAnswer === option ? '#ddd' : 'white' }
                         ]}
-                        onPress={() => onAnswerSelect(option)}
+                        onPress={() => {
+                            onAnswerSelect(option);
+                            count += 1; 
+                            }
+                        }
                     >
                         <Text style={styles.optionText}>{option}</Text>
                     </TouchableOpacity>
@@ -100,9 +104,9 @@ const QuestionScreen = ({ navigation, route }) => {
             <TouchableOpacity
                 style={styles.nextButton}
                 onPress={async () => {
-                    if (questionIndex < Object.keys(question.questions).length - 1) {
+                    if (count < 5) {
                         // Navigate to the same screen with updated questionIndex
-                        navigation.push('Question', { question: question, user: user, count: questionIndex + 1 });
+                        navigation.push('Question', { question: question, user: user, count: count + 1 });
                         let add_score = await fetch(`http://localhost:3000/updatescore?username=${user.username}&newTotalScore=${score}`)
                         if (add_score.ok) {
                             console.log("Score Updated");

@@ -17,7 +17,7 @@ const getImage = (imageName) => {
     return imageMap[imageName]; // default image if not found
 };
 
-const createQuestion = async ({ navigation, topic }) => {
+const createQuestion = async ({ navigation, user, topic }) => {
     try {
         // Construct the URL with the topic query parameter
         const url = `http://localhost:3000/questions?topic=${encodeURIComponent(topic)}`;
@@ -31,7 +31,12 @@ const createQuestion = async ({ navigation, topic }) => {
         }
 
         // Parse the JSON response
-        const question = await response.json();
+        let question = []
+        question.push(await response.json());
+
+        let count = 1;
+        console.log(question, " from home page!"); 
+        console.log(typeof question, " from home page!");
 
         // Navigate with the fetched question
         navigation.navigate('Question', { question, user, count });
@@ -40,7 +45,7 @@ const createQuestion = async ({ navigation, topic }) => {
     }
 };
 
-const HomeScreen = ({ route }) => {
+const HomeScreen = ({ navigation, route }) => {
     const { user } = route.params;
     console.log(user, " from home page!"); // Now you can use the user object
 
@@ -48,7 +53,7 @@ const HomeScreen = ({ route }) => {
         <ScrollView style={styles.container}>
             <Text style={styles.title}>Pick Your Tech</Text>
             {techs.map((tech) => (
-                <TouchableOpacity key={tech.id} style={styles.diningHallContainer} onPress={() => createQuestion({ navigation, topic: tech.name })}>
+                <TouchableOpacity key={tech.id} style={styles.diningHallContainer} onPress={() => createQuestion({ navigation, user, topic: tech.name })}>
                     <Image source={getImage(tech.image)} style={styles.diningHallImage} />
                     <View style={styles.textContainer}>
                         <Text style={styles.diningHallName}>{tech.name}</Text>
