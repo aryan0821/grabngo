@@ -25,6 +25,7 @@ app.get("/login", (req, res) => {
         });
     }
     catch (e) {
+        res.status(500).json({ error: e });
         console.error(e);
     }
 });

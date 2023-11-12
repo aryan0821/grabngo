@@ -1,11 +1,27 @@
-import React from 'react';
+import React, { createContext, useState }  from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 
 const LoginScreen = ({ navigation }) => {
     // Replace with your login handling logic
-    const handleLogin = () => {
+    
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+
+    const handleLogin = async () => {
         // Navigate to the 'Home' screen
-        navigation.navigate('Home');
+        const response = await fetch(`http://localhost:3000/login?username=${username}&password=${password}`)
+        if (response.ok) {
+            const user = await response.json();
+            console.log(user);
+            if (user.error) {
+                alert(user.error);
+                // Stay on the login screen
+                // // navigation.navigate('Login');
+                // navigation.navigate('Login', { user });
+            } else {
+                navigation.navigate('Home', { user });
+            }
+        }
     };
 
     return (
@@ -15,12 +31,14 @@ const LoginScreen = ({ navigation }) => {
                 style={styles.input}
                 placeholder="Username"
                 placeholderTextColor="#FFFFFF90" // White with opacity
+                onChangeText={text => setUsername(text)}
             />
             <TextInput
                 style={styles.input}
                 placeholder="Password"
                 placeholderTextColor="#FFFFFF90" // White with opacity
                 secureTextEntry={true}
+                onChangeText={text => setPassword(text)}
             />
             <TouchableOpacity onPress={handleLogin} style={styles.button}>
                 <Text style={styles.buttonText}>Log In</Text>

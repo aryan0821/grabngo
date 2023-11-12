@@ -35,13 +35,16 @@ const createQuestion = async ({ topic }) => {
         const question = await response.json();
 
         // Navigate with the fetched question
-        useNavigation.navigate('Question', { question });
+        useNavigation.navigate('Question', { question, user });
     } catch (error) {
         console.error('Error fetching question:', error);
     }
 };
 
-const HomeScreen = ({ navigation }) => {
+const HomeScreen = ({ route }) => {
+    const { user } = route.params;
+    console.log(user, " from home page!"); // Now you can use the user object
+
     return (
         <ScrollView style={styles.container}>
             <Text style={styles.title}>Pick Your Tech</Text>

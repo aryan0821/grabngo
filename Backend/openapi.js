@@ -49,7 +49,7 @@ async function fetchQuestion(topic) {
 
 }
 
-fetchQuestion("react");
+// fetchQuestion("react");
 
 // fetchQuestion();
 

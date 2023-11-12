@@ -28,11 +28,12 @@ async function authenticateUser(username, password) {
 
         // Find the user that matches the username
         const user = await collection.findOne({ username: username });
-        console.log("user", user);
+        console.log("user with username ", username, user);
 
         // Check if a user was found and if the password matches
         if (user && user.password === password) {
             // Return the user object
+            // console.log("actual password", user.password, "   input password", password);
             return user;
         } else {
             // Return an error message

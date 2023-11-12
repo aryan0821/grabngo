@@ -3,7 +3,9 @@ import { View, Text, TouchableOpacity, StyleSheet, Animated } from 'react-native
 
 const QuestionScreen = ({ navigation, route }) => {
     // Example question and answers
-    const { question } = route.params; // Destructuring to get the topic passed from HomeScreen
+    const { question, user } = route.params; // Destructuring to get the topic passed from HomeScreen
+
+    let userPoints = user.totalScore;
 
     // Example question and answers (modify these based on the passed topic)
     const [options, setOptions] = useState([]);
@@ -49,6 +51,7 @@ const QuestionScreen = ({ navigation, route }) => {
     const onAnswerSelect = (answer) => {
         setSelectedAnswer(answer);
         if (answer === correctAnswer) {
+            userPoints += 1;
             console.log("Correct Answer");
             animateBackgroundColor(1, 'green');
         } else {
