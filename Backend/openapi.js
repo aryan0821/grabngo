@@ -5,7 +5,7 @@ import OpenAI from 'openai';
 
 // const { OpenAI } = require("openai");
 
-const openai = new OpenAI({ apiKey: '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' });
+const openai = new OpenAI({ apiKey: 'your-key-here' });
 
 async function fetchQuestion(topic) {
     const completion = await openai.chat.completions.create({

@@ -181,24 +181,24 @@ async function createUsersCollection() {
     const db = client.db("HackUmass2023");
 
     // Specify the collection
-    const collection = db.collection("users");
+    const users = db.collection("users");
+
+    // Create a unique index on username
+    await users.createIndex({ username: 1 }, { unique: true });
 
     // Create an array of user documents
-    const users = [
-      { username: "user1", password: "password1", questions: {question1: {score: 0}, question2: {score: 0}, question3: {score: 0}}, totalScore: 0 },
-      { username: "user2", password: "password2", questions: {question1: {score: 0}, question2: {score: 0}, question3: {score: 0}}, totalScore: 0 },
+    const userDocs = [
+      { username: "user1", password: "password1", totalScore: 0 },
+      { username: "user2", password: "password2", totalScore: 0 },
       // Add more users as needed
     ];
 
     // Insert the array of users into the collection
-    await collection.insertMany(users);
+    await users.insertMany(userDocs);
 
-    console.log("Users inserted successfully");
-  } catch (e) {
-    console.error(e);
-  } finally {
-    // Ensures that the client will close when you finish/error
-    await client.close();
+    console.log("Users collection created successfully");
+  } catch (error) {
+    console.error("Error creating users collection: ", error);
   }
 }
 
@@ -256,9 +256,28 @@ async function authenticateUser(username, password) {
     }
 }
 
+async function removeUserByUsername(username) {
+    // Connect the client to the server
+    await client.connect();
+
+    console.log("Connected correctly to server. User will be removed.", username);
+
+    // Specify the database
+    const db = client.db("HackUmass2023");
+    const users = db.collection('users');
+
+    const result = await users.deleteMany({ username: username });
+
+    console.log(`${result.deletedCount} document(s) were deleted.`);
+}
+
 
 // createUsersCollection().catch(console.dir);
 // run().catch(console.dir);
+
+// removeUserByUsername("user2").catch(console.dir);
+
+createUsersCollection().catch(console.dir);
 
 export { client, createQuestion, removeQuestion };
 

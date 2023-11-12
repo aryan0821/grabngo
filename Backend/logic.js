@@ -15,7 +15,7 @@ app.get('/', (req, res) => {
   res.send('Hello, world!');
 });
 
-
+// UserAuth takes in a username and password and returns the user object
 app.get("/login", (req, res) => {
     try {
         const username = req.query.username;
@@ -29,6 +29,8 @@ app.get("/login", (req, res) => {
     }
 });
 
+// takes in a topic and pings the function in openapi.js to return a question
+// Should return a question JSON object
 app.get("/questions", (req, res) => {
     try {
         const topic = req.query.topic;
@@ -52,3 +54,4 @@ app.listen(port, () => {
 
 
 
+/////////////////////////// Question ///////////////////////////
