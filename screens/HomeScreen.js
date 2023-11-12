@@ -2,6 +2,7 @@
 import React from 'react';
 import { SafeAreaView, View, ScrollView, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import techs from '../data/Tech.json';
+import { useNavigation } from '@react-navigation/native';
 
 const imageMap = {
     '../assets/tech-1.png': require('../assets/tech-1.png'),
@@ -21,7 +22,7 @@ const HomeScreen = ({ navigation }) => {
         <ScrollView style={styles.container}>
             <Text style={styles.title}>Pick Your Tech</Text>
             {techs.map((tech) => (
-                <TouchableOpacity key={tech.id} style={styles.diningHallContainer}>
+                <TouchableOpacity key={tech.id} style={styles.diningHallContainer} onPress={() => navigation.navigate('Question', { topic: tech.name })}>
                     <Image source={getImage(tech.image)} style={styles.diningHallImage} />
                     <View style={styles.textContainer}>
                         <Text style={styles.diningHallName}>{tech.name}</Text>
