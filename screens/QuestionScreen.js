@@ -110,12 +110,10 @@ const styles = StyleSheet.create({
         borderColor: '#ccc',
         borderRadius: 5,
         backgroundColor: 'white',
-        fontFamily: 'YourCustomFont', // Custom font for option buttons
     },
     optionText: {
         fontSize: 18,
         textAlign: 'center',
-        fontFamily: 'YourCustomFont', // Custom font for option text
     },
 });
 
