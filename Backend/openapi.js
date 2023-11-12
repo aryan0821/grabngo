@@ -2,12 +2,11 @@
 
 // import OpenAI from 'openai-api';
 import OpenAI from 'openai';
-import { endEvent } from 'react-native/Libraries/Performance/Systrace';
-
+import dotenv from 'dotenv';
 // const { OpenAI } = require("openai");
-require('dotenv').config();
+dotenv.config();
 
-const openai = new OpenAI({ apiKey: process.env.API_KEY });
+const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 async function fetchQuestion(topic) {
     const completion = await openai.chat.completions.create({

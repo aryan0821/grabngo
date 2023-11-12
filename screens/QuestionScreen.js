@@ -3,10 +3,9 @@ import { View, Text, TouchableOpacity, StyleSheet, Animated } from 'react-native
 
 const QuestionScreen = ({ navigation, route }) => {
     // Example question and answers
-    const { topic } = route.params; // Destructuring to get the topic passed from HomeScreen
+    const { question } = route.params; // Destructuring to get the topic passed from HomeScreen
 
     // Example question and answers (modify these based on the passed topic)
-    const [question, setQuestion] = useState("");
     const [options, setOptions] = useState([]);
     const [correctAnswer, setCorrectAnswer] = useState("");
     const [selectedAnswer, setSelectedAnswer] = useState("");
