@@ -6,7 +6,7 @@ import dotenv from 'dotenv';
 // const { OpenAI } = require("openai");
 dotenv.config();
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+const openai = new OpenAI({ apiKey: process.env.API_KEY });
 
 async function fetchQuestion(topic) {
     const completion = await openai.chat.completions.create({
