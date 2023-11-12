@@ -3,6 +3,7 @@ import React from 'react';
 import { SafeAreaView, View, ScrollView, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import techs from '../data/Tech.json';
 import { useNavigation } from '@react-navigation/native';
+import { createQuestion } from '../Backend/db';
 
 const imageMap = {
     '../assets/tech-1.png': require('../assets/tech-1.png'),
@@ -17,12 +18,17 @@ const getImage = (imageName) => {
     return imageMap[imageName]; // default image if not found
 };
 
+const createQuestion = async ({ topic }) => {
+    const question = await getQuestion(topic);
+    useNavigation.navigate('Question', { question });
+};
+
 const HomeScreen = ({ navigation }) => {
     return (
         <ScrollView style={styles.container}>
             <Text style={styles.title}>Pick Your Tech</Text>
             {techs.map((tech) => (
-                <TouchableOpacity key={tech.id} style={styles.diningHallContainer} onPress={() => navigation.navigate('Question', { topic: tech.name })}>
+                <TouchableOpacity key={tech.id} style={styles.diningHallContainer} onPress={() => createQuestion(tech.topic)}>
                     <Image source={getImage(tech.image)} style={styles.diningHallImage} />
                     <View style={styles.textContainer}>
                         <Text style={styles.diningHallName}>{tech.name}</Text>
