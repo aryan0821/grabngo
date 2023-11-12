@@ -104,6 +104,7 @@ const QuestionScreen = ({ navigation, route }) => {
                         // Navigate to the same screen with updated questionIndex
                         setCount(currCount + 1);
                         setBackgroundColor('white');
+                        console.log("user is ", user, " in create question ")
                         // navigation.push('Question', { question: question, user: user, count: currCount });
                         let add_score = await fetch('http://localhost:3000/updatescore', {
                                         method: 'POST',
@@ -111,7 +112,7 @@ const QuestionScreen = ({ navigation, route }) => {
                                             'Content-Type': 'application/json',
                                         },
                                         body: JSON.stringify({
-                                            username: user.username,
+                                            username: user["username"],
                                             newTotalScore: score,
                                         }),
                                         });

@@ -70,8 +70,8 @@ app.get("/getscore", async (req, res) => {
 
   app.post("/updatescore", async (req, res) => {
     try {
-      const username = req.query.username;
-      const new_score = req.query.newTotalScore;
+      const username = req.body.username;
+      const new_score = req.body.newTotalScore;
 
       updateScore(username, new_score).then(() => res.status(200).send("YES!"))
         .catch(e => console.log(e));
