@@ -3,9 +3,8 @@
 import express from "express";
 import cors from "cors";
 import { authenticateUser } from "./auth.js";
-import { client, getUserScore, updateScore } from "./db.js";
+import { client, getUserScore, updateScore, insertQuestion } from "./db.js";
 // import { fetchQuestion } from "./openapi.js";
-import { client, insertQuestion } from "./db.js";
 import { fetchQuestion } from "./openapi.js";
 
 const app = express();
