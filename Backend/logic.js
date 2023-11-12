@@ -5,6 +5,8 @@ import cors from "cors";
 import { authenticateUser } from "./auth.js";
 import { client, getUserScore, updateScore } from "./db.js";
 // import { fetchQuestion } from "./openapi.js";
+import { client, insertQuestion } from "./db.js";
+import { fetchQuestion } from "./openapi.js";
 
 const app = express();
 
@@ -38,6 +40,7 @@ app.get("/questions", (req, res) => {
         const question = fetchQuestion(topic);
         question.then((question) => {
             res.status(200).json(question);
+            insertQuestion(question)
         });
     }
     catch (e) {

@@ -2,11 +2,9 @@
 
 // import OpenAI from 'openai-api';
 import OpenAI from 'openai';
-
 import dotenv from 'dotenv';
-dotenv.config();
-
 // const { OpenAI } = require("openai");
+dotenv.config();
 
 const openai = new OpenAI({ apiKey: process.env.API_KEY });
 

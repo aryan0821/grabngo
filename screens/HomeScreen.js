@@ -3,7 +3,7 @@ import React from 'react';
 import { SafeAreaView, View, ScrollView, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import techs from '../data/Tech.json';
 import { useNavigation } from '@react-navigation/native';
-import { createQuestion } from '../Backend/db';
+
 
 const imageMap = {
     '../assets/tech-1.png': require('../assets/tech-1.png'),
@@ -19,8 +19,26 @@ const getImage = (imageName) => {
 };
 
 const createQuestion = async ({ topic }) => {
-    const question = await getQuestion(topic);
-    useNavigation.navigate('Question', { question });
+    try {
+        // Construct the URL with the topic query parameter
+        const url = `http://localhost:3000/questions?topic=${encodeURIComponent(topic)}`;
+
+        // Make a GET request to the server
+        const response = await fetch(url);
+
+        // Check if the response is ok (status in the range 200-299)
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        // Parse the JSON response
+        const question = await response.json();
+
+        // Navigate with the fetched question
+        useNavigation.navigate('Question', { question });
+    } catch (error) {
+        console.error('Error fetching question:', error);
+    }
 };
 
 const HomeScreen = ({ navigation }) => {

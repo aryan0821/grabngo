@@ -315,6 +315,23 @@ async function updateScore(username, newScore) {
   } catch (e) {
     console.error(`Error updating score for ${username}:`, e);
   }
+// function that takes in a JSON of a question and adds it to the database to the Questions collection
+async function insertQuestion(question) {
+  await client.connect();
+  
+  const db = client.db("HackUmass2023");
+
+  const questionsCollection = db.collection('questions');
+
+  const newQuestion = {
+    topic: question.topic,
+    scenario: question.scenario,
+    questions: question.questions
+  };
+
+  const result = await questionsCollection.insertOne(newQuestion);
+
+  console.log(`New question inserted with the following id: ${result.insertedId}`);
 }
 
 
@@ -329,7 +346,45 @@ async function updateScore(username, newScore) {
 
 // updateUserScore("user2",1).catch(console.dir); 
 
-export { client, createQuestion, removeQuestion, getUserScore, updateScore };
+
+let x = {
+  topic: 'ReactJs',
+  scenario: "You are building a React application and need to implement a feature that allows users to select their favorite movies. Each movie will have a title, genre, and a button to add it to the user's favorites list. The favorites list should be displayed on the screen after the user selects a movie. You decide to use React's useState hook to manage the state of the favorites list. Write a component that implements this feature using React.",
+  questions: {
+    Question1: {
+      question: 'What is the purpose of useState hook in React?',
+      CorrectAnswer: 'To manage state in functional components',
+      answer2: 'To create class components',
+      Answer3: 'To handle asynchronous requests',
+      answer4: 'To handle form submissions'
+    },
+    Question2: {
+      question: 'How do you use useState hook to manage state?',
+      CorrectAnswer: 'By calling useState and passing initial state as argument',
+      answer2: "By importing useState from 'react' package",
+      Answer3: 'By using useState in a class component',
+      answer4: 'By subscribing to useState event'
+    },
+    Question3: {
+      question: 'What is the return value of useState hook?',
+      CorrectAnswer: 'An array containing the current state value and a function to update the state',
+      answer2: 'The current state value',
+      Answer3: 'A boolean indicating whether the state has changed or not',
+      answer4: 'An object containing the state value and the update function'
+    },
+    Question4: {
+      question: 'How do you update the state using useState hook?',
+      CorrectAnswer: 'By calling the update function returned by useState',
+      answer2: 'By directly modifying the state value',
+      Answer3: 'By calling the setState function',
+      answer4: 'By using the useState event'
+    }
+  }
+};
+
+// insertQuestion(x.topic, x.scenario, x.questions).catch(console.dir);
+
+export { client, createQuestion, insertQuestion, removeQuestion, getUserScore, updateScore };
 
 // createQuestionsCollection().catch(console.dir);
 // run().catch(console.dir);
